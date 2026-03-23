@@ -1,3 +1,4 @@
+## WIP
 require "bundler/setup"
 require "rage"
 Bundler.require(*Rage.groups)
@@ -15,7 +16,7 @@ puts ""
 
 # Step 2 - build a valid WAL entry with future timestamp
 task_id    = "#{future_timestamp}-99999-1"
-serialized = Marshal.dump([SayHello, {}, { name: "OldTask" }, [], "req_id", {}]).dump
+serialized = Marshal.dump(['SayHello', {}, { name: "OldTask" }, [], "req_id", {}]).dump
 entry      = "add:#{task_id}:0:#{serialized}"
 crc        = Zlib.crc32(entry).to_s(16).rjust(8, "0")
 wal_line   = "#{crc}:#{entry}\n"
@@ -49,7 +50,7 @@ puts ""
 
 # Step 6 - generate a new task ID
 new_task_id = backend.add(
-  [SayHello, {}, { name: "NewTask" }, [], "req_id", {}]
+  ['SayHello', {}, { name: "NewTask" }, [], "req_id", {}]
 )
 new_timestamp = new_task_id.split("-").first.to_i
 puts "New task ID:        #{new_task_id}"
