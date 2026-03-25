@@ -1,4 +1,4 @@
-## WIP
+## WIP: Need More Variation and a real world example!
 require "bundler/setup"
 require "rage"
 Bundler.require(*Rage.groups)
