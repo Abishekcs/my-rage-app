@@ -1,4 +1,6 @@
 ## WIP: Need More Variation and a real world example!
+## Implement  Time, Clocks, and the Ordering of Events in a 
+## Distributed System
 require "bundler/setup"
 require "rage"
 Bundler.require(*Rage.groups)
