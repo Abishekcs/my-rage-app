@@ -1,11 +1,3 @@
-## WIP: Need More Variation and a real world example!
-## Implement  Time, Clocks, and the Ordering of Events in a 
-## Distributed System
-## Done with reading Lesile Lamport paper on this topic
-## Ordering of Events in
-## a Distributed System
-## Leslie Lamport
-## Massachusetts Computer Associates, Inc.
 require "bundler/setup"
 require "rage"
 Bundler.require(*Rage.groups)
