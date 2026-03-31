@@ -1,0 +1,1 @@
+Rage Playground. Gemfile of Rage points to local setup of Rage codebase.So, Changes made In my local setup is reflected in this codebase.Currently I find this way of testing and learning things much easier and fun.
