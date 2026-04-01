@@ -6,7 +6,7 @@ Bundler.require(*Rage.groups)
 require 'rage/all'
 require 'zlib'
 
-puts '=== Reproducing WAL Timestamp Bug ==='
+puts '=== Reproducing File Storage Timestamp Bug ==='
 puts ''
 
 # Step 1 - create a future timestamp (simulating previous server run)
@@ -22,7 +22,7 @@ entry      = "add:#{task_id}:0:#{serialized}"
 crc        = Zlib.crc32(entry).to_s(16).rjust(8, '0')
 wal_line   = "#{crc}:#{entry}\n"
 
-puts "WAL entry task ID: #{task_id}"
+puts "File Storage entry task ID: #{task_id}"
 puts ''
 
 # Step 3 - write fake WAL file
@@ -30,7 +30,7 @@ storage_path = Pathname.new('storage/bug_repro')
 storage_path.mkpath
 wal_file = storage_path.join("deferred-0-#{Time.now.strftime('%Y%m%d')}-99999-bugtest")
 wal_file.write(wal_line)
-puts "Written WAL file: #{wal_file}"
+puts "Written Storage file: #{wal_file}"
 puts ''
 
 # Step 4 - initialize disk backend (reads WAL on boot)
@@ -45,7 +45,7 @@ pending = backend.pending_tasks
 puts "Pending tasks found: #{pending.length}"
 pending.each do |task_id, _task, _publish_at|
   puts "  task_id: #{task_id}"
-  puts "  timestamp in WAL: #{task_id.split('-').first}"
+  puts "  timestamp in Storage File: #{task_id.split('-').first}"
 end
 puts ''
 
@@ -56,17 +56,17 @@ new_task_id = backend.add(
 new_timestamp = new_task_id.split('-').first.to_i
 puts "New task ID:        #{new_task_id}"
 puts "New timestamp:      #{new_timestamp}"
-puts "WAL max timestamp:  #{future_timestamp}"
+puts "Storage File max timestamp:  #{future_timestamp}"
 puts ''
 
 # Step 7 - show the bug
 if new_timestamp < future_timestamp
-  puts '🔥 BUG REPRODUCED!'
-  puts "   New timestamp #{new_timestamp} is LOWER than WAL timestamp #{future_timestamp}"
+  puts 'BUG REPRODUCED!'
+  puts "   New timestamp #{new_timestamp} is LOWER than Storage File timestamp #{future_timestamp}"
   puts '   Tasks could have duplicate or out-of-order IDs!'
 else
-  puts '✅ No bug detected'
-  puts "   New timestamp #{new_timestamp} is higher than WAL timestamp #{future_timestamp}"
+  puts 'No bug detected'
+  puts "   New timestamp #{new_timestamp} is higher than Storage File timestamp #{future_timestamp}"
 end
 
 # cleanup
