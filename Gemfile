@@ -2,6 +2,9 @@ source "https://rubygems.org"
 
 gem "rage-rb", path: "/home/ad/Desktop/rage"
 
+gem 'benchmark'
+gem 'activesupport'
+
 # Build JSON APIs with ease
 # gem "alba"
 
